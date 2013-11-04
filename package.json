@@ -1,0 +1,31 @@
+{
+	"name": "app.js",
+	"version": "0.0.1",
+	"author": "Jan Zenisek <janzenisek@gmx.at>",
+	"description": "ctlnode - a simple collaborative task list tool using node.js (and modules)",
+	"repository": {
+		"type"	: "git",
+		"url"	: "git://github.com/janzenisek/ctlnode.git"
+	},
+	"keywords": [
+		"collaborative",
+		"task",
+		"list",
+		"todo",
+		"check"
+	],
+	"dependencies": {
+		"express"	: "3.4.x",
+		"jade"		: "0.35.x",
+		"stylus"	: "0.39.x",
+		"moment"	: "2.4.x",
+		"redirect"	: "0.0.2",
+		"socket.io"	: "0.9.x",
+		"mongoskin"	: "0.6.x"
+	},
+	"license": "MIT",
+	"engines": {
+		"node"	: "0.10.x",
+		"npm"	: "1.3.x"
+	}
+}

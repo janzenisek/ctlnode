@@ -1,0 +1,15 @@
+!!! 5
+html
+	head
+		title ctlnode
+		link(rel='stylesheet', href='/styles/reset.css')
+		link(rel='stylesheet', href='/styles/defaults.css')
+		link(rel='stylesheet', href='/styles/core.css')
+		script(type='text/javascript', src='/scripts/jquery-2.0.3.min.js')
+		script(type='text/javascript', src='/scripts/jade.js')
+	body
+		.page
+			header
+				a#brand(href='http://www.google.com') ctlnode
+			.content
+				block content

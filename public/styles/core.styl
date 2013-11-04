@@ -1,0 +1,60 @@
+$blue		= #4F81BD
+$gray		= #333333
+$black		= #111111
+$white		= #FCFCFC
+$lightgray	= #CCCCCC
+$listgray1	= #EEEEEE
+$listgray2	= #DDDDDD
+box-sizing()
+	box-sizing arguments
+	-moz-box-sizing arguments
+
+*
+	padding 0
+	margin 0
+body
+	color $gray
+	background-color $white
+	font-family PTSansRegular, Sans-Serif
+	font-size 13pt
+	font-weight normal
+	.page
+		width 960px
+		margin 0 auto 0 auto
+		padding 30px 0 0 0
+		header
+			padding 10px 0 0 10px
+			margin 0 0 20px 0
+			text-transform uppercase
+			border-bottom 2px solid $lightgray
+			a#brand
+				font-family PTSansBold
+				font-size 1.5em
+				font-weight normal
+				color $blue
+				text-decoration none
+				&:focus
+				&:hover
+					text-decoration none
+		ul
+			margin 10px 0 10px 0
+			padding 0
+			list-style-type none
+			li
+				margin 0
+				padding 10px
+				background-color $listgray1
+				&:nth-child(2n+1)
+					background-color $listgray2
+
+h3
+	font-size 1em
+	font-weight normal
+	text-align right
+	padding: 0 0 10px 0
+a
+	color $blue
+	text-decoration none
+	&:focus
+	&:hover
+		text-decoration underline

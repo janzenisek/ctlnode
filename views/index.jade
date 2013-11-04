@@ -1,0 +1,8 @@
+extends layout
+block content
+	h3
+		| #{list.alias} - created on #{list.creationMoment}
+	ul
+		each task in list.tasks
+			li
+				| #{task.id}: #{task.description}
