@@ -1,5 +1,5 @@
 $blue		= #4F81BD
-$gray		= #333333
+$gray		= #555555
 $black		= #111111
 $white		= #FCFCFC
 $lightgray	= #CCCCCC
@@ -12,6 +12,28 @@ box-sizing()
 *
 	padding 0
 	margin 0
+ ul
+	padding 0
+	list-style-type none
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
+}
+h2, h3
+	font-size 1em
+	font-family PTSansBold, sans-serif
+	text-transform uppercase
+	padding: 5px 0 5px 0
+a
+	color $blue
+	text-decoration none
+	&:focus
+	&:hover
+		text-decoration underline
+
 body
 	color $gray
 	background-color $white
@@ -22,12 +44,12 @@ body
 		width 960px
 		margin 0 auto 0 auto
 		padding 30px 0 0 0
-		header
+		&>header
 			padding 10px 0 0 10px
 			margin 0 0 20px 0
 			text-transform uppercase
 			border-bottom 2px solid $lightgray
-			a#brand
+			a.brand
 				font-family PTSansBold
 				font-size 1.5em
 				font-weight normal
@@ -36,25 +58,68 @@ body
 				&:focus
 				&:hover
 					text-decoration none
-		ul
-			margin 10px 0 10px 0
-			padding 0
-			list-style-type none
-			li
-				margin 0
-				padding 10px
-				background-color $listgray1
-				&:nth-child(2n+1)
-					background-color $listgray2
 
-h3
-	font-size 1em
-	font-weight normal
-	text-align right
-	padding: 0 0 10px 0
-a
-	color $blue
-	text-decoration none
-	&:focus
-	&:hover
-		text-decoration underline
+.content
+	header
+		padding 40px 0 20px 0
+		.listinfo
+			float right
+			span
+				color $lightgray
+				padding 0 30px 0 30px
+				border-right 1px solid $lightgray
+				&:last-child
+					border-right 0
+					padding-right 0
+
+form.add-task
+	padding 10px 0 10px 0
+	ul>li
+		display block
+		&:after
+			content "."
+			clear both
+			display block
+			visibility hidden
+			height 0px
+		input, button
+			font-size inherit
+			font-weight inherit
+			font-family inherit
+			background-color inherit
+			border 2px solid $lightgray
+			resize vertical
+			&:focus
+			&:hover
+				border-color $blue
+		input
+			margin 0 0 0 0
+			width 85%
+			padding 10px
+			float left
+			color $lightgray
+			&:focus
+			&:hover
+				color $blue
+		button
+			margin 0
+			padding 11px 10px 9px 10px
+			float right
+			text-transform lowercase
+			cursor pointer
+			color $white
+			background-color $lightgray
+			&:focus
+			&:hover
+				background-color $blue
+section.tasklist
+	padding 20px 0 20px 0
+	ul
+		margin 10px 0 10px 0
+		li
+			margin 0
+			padding 10px
+			background-color $listgray1
+			&:nth-child(2n+1)
+				background-color $listgray2
+			

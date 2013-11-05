@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var socketio = require('socket.io');
 var redirect = require('redirect')('ctlnode.herokuapp.com');
 var lists = require('lists');
 
@@ -61,6 +62,42 @@ app.get('/:alias', function (req, res) {
 
 // bind app to server-specified listening-port or development-default port 3000
 var server = http.createServer(app).listen(process.env.PORT || 3000);
+
+// start socket server of socket.io
+var io = socketio.listen(server);
+
+// listen to connection-request of clients (argument 'socket')
+io.sockets.on('connection', function (socket) {
+    console.log(" >> got connection-request from: " + socket.id);
+    socket.on('aliasResponse', function (aliasData, callbackAliasResponse) {
+        console.log(" >> got alias: " + aliasData.alias);
+        socket.join(aliasData.alias); // join a romm => a socket partition for all clients who collaborate on one list)
+        console.log(" >> joined aliasroom: " + aliasData.alias);
+        callbackAliasResponse();
+        socket.on('addTask', function (taskData) {
+            console.log(" >> got task to add: " + taskData.description);
+
+            // create new task for taskData on db and send it back to all clients, listening on alias
+            lists.addTask(aliasData.alias, taskData.description, function (newTask) {
+                io.sockets.in(aliasData.alias).emit('addedTask', newTask);
+            });  
+        });
+        socket.on('removeTask', function (taskData) {
+            lists.removeTask(aliasData.alias, taskData.id, function () {
+                io.sockets.in(aliasData.alias).emit('removedTask', taskData.id);
+            })
+        });
+        socket.on('changeTaskState', function (taskData) {
+            lists.changeTaskState(aliasData.alias, taskData.id, taskData.state, function (changedTask) {
+                io.sockets.in(aliasData.alias).emit('changedTaskState', changedTask);
+            })
+        });
+    })
+    // listen to disconnect of client bound to 'socket'
+    socket.on('dissconnect', function () {
+
+    })
+});
 
 function makeNewAlias(callback) {
     var alias = "";
