@@ -1,3 +1,4 @@
+//- server-side jade template engine
 extends layout
 block content
 	header.clearfix
@@ -8,10 +9,9 @@ block content
 				| from #{list.creationMoment}
 			span.expireMoment
 				| expires on
-
 	form#add-task.add-task: ul: li
 		input(type='text', id='text-taskdesc', name='text-taskdesc', placeholder='enter task description')
-		button(id='button-ct', name='button-ct') add to list
+		button(id='button-ct', name='button-ct') add task
 	section.tasklist.todo
 		h3
 			| todo
@@ -20,11 +20,12 @@ block content
 				if task.state === 'todo'
 					li(id='t-#{task.id}')
 						if task.state === 'done'
-							input(type='checkbox', checked='checked')
+							input(type='checkbox', id='cb-#{task.id}', checked='checked')
 						else
-							input(type='checkbox')
+							input(type='checkbox', id='cb-#{task.id}')
+						label(for='cb-#{task.id}') x
 						span #{task.description}
-						button(type='submit',  name='button-rm') x
+						button(type='submit',  name='button-rm') -
 	section.tasklist.done
 		h3
 			| done
@@ -33,27 +34,38 @@ block content
 				if task.state === 'done'
 					li(id='t-#{task.id}')
 						if task.state === 'done'
-							input(type='checkbox', checked='checked')
+							input(type='checkbox', id='cb-#{task.id}', checked='checked')
 						else
-							input(type='checkbox')
+							input(type='checkbox', id='cb-#{task.id}')
+						label(for='cb-#{task.id}') x
 						span #{task.description}
-						button(type='submit',  name='button-rm') x
+						button(type='submit',  name='button-rm') -
+
+
 
 	//- browser/client-side jade template engine
+	//- ----------------------------------------
 	script(type='text/jade')#taskTemplate.
 		li(id='t-\#{id}')
 			if state === 'done'
-				input(type='checkbox', checked='checked')
+				input(type='checkbox', id='cb-\#{id}', checked='checked')			
 			else
-				input(type='checkbox')
+				input(type='checkbox', id='cb-\#{id}')
+			label(for='cb-\#{id}') x
 			span \#{description}
-			button(type='submit', name='button-rm') x
+			button(type='submit', name='button-rm') -
+
+
 
 	//- client business logic
+	//- ---------------------
 	script.
+		// set up a client-side jade template object
 		var taskTemplate = jade.compile($('#taskTemplate').text());
 
+		// connect to a socket.io server
 		var socket = io.connect();
+
 		// emit event to join a room 
 		socket.emit('aliasResponse', { alias: '#{list.alias}' }, function() {
 			console.log(" >> emitted alias");
@@ -70,6 +82,7 @@ block content
 				socket.emit('addTask', { description: validTask});
 			});
 
+			// catch all bubbling click events on the lists
 			$(".tasklist").each(function(){
 				var $tc = $(this);
 

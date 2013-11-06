@@ -33,6 +33,8 @@ a
 	&:focus
 	&:hover
 		text-decoration underline
+input
+	outline none
 
 body
 	color $gray
@@ -41,7 +43,7 @@ body
 	font-size 13pt
 	font-weight normal
 	.page
-		width 960px
+		width 75%
 		margin 0 auto 0 auto
 		padding 30px 0 0 0
 		&>header
@@ -94,7 +96,7 @@ form.add-task
 				border-color $blue
 		input
 			margin 0 0 0 0
-			width 85%
+			width 80%
 			padding 10px
 			float left
 			color $lightgray
@@ -103,7 +105,9 @@ form.add-task
 				color $blue
 		button
 			margin 0
-			padding 11px 10px 9px 10px
+			width 15%
+			padding 11px 0px 9px 0px
+			text-align center
 			float right
 			text-transform lowercase
 			cursor pointer
@@ -118,8 +122,45 @@ section.tasklist
 		margin 10px 0 10px 0
 		li
 			margin 0
-			padding 10px
 			background-color $listgray1
 			&:nth-child(2n+1)
 				background-color $listgray2
-			
+			input[type=checkbox]
+				display none
+			input[type=checkbox] + label
+				width 32
+				height 32
+				float left
+				padding 14px 20px 12px 20px
+				display inline-block
+				cursor pointer
+				color $lightgray
+				background-color $lightgray
+				font-family PTSansBold
+				overflow hidden
+				&:hover
+					color $gray
+					background-color $gray
+			input[type=checkbox]:checked + label
+				color $white
+			span
+				float left
+				padding 12px
+			button
+				float right
+				color $white
+				background-color $lightgray
+				font-family PTSansBold
+				font-size inherit
+				line-height inherit
+				border 0
+				padding 13px 7px 13px 7px
+				cursor pointer
+				&:hover
+					background-color $blue
+			&:after
+				content "."
+				clear both
+				display block
+				visibility hidden
+				height 0px
