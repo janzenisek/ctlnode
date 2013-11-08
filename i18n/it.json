@@ -1,0 +1,17 @@
+{
+	"taskinfo": {
+		"creationMoment": "vom",
+		"expireMoment": "erlischt am"
+	},
+	"controls": {
+		"inputTaskDescription": "Aufgabenbeschreibung eingeben",
+		"buttonAddTask": "hinzufügen",
+		"buttonRemoveTask": "entfernen",
+		"buttonDoneTask": "erledigen",
+		"buttonUndoneTask": "zurücknehmen"
+	},
+	"lists": {
+		"headerTodo": "Geplant",
+		"headerDone": "Erledigt"
+	}
+}

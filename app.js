@@ -2,10 +2,11 @@
 var http        = require('http'),
     express     = require('express'),
     socketio    = require('socket.io'),
+    lingua      = require('lingua')
     redirect    = require('redirect')('ctlnode.herokuapp.com'),
     lists       = require('lists');
 
-// middleware: configuration
+// middleware: configuration of nested modules
 var app = express();
 app.configure(function () {
     app.set('view engine', 'jade');
@@ -14,6 +15,10 @@ app.configure(function () {
     app.use(express.static(__dirname + '/public'));
     app.use(require('stylus').middleware({
         src: __dirname + '/public'
+    }));
+    app.use(lingua(app, {
+        defaultLocale: 'en',
+        path: __dirname + '/i18n'
     }));
 });
 

@@ -6,15 +6,15 @@ block content
 			span.alias
 				| #{list.alias}
 			span.creationMoment
-				| from #{list.creationMoment}
+				| #{lingua.taskinfo.creationMoment} #{list.creationMoment}
 			span.expireMoment
-				| expires on
+				| #{lingua.taskinfo.expireMoment}
 	form#add-task.add-task: ul: li
-		input(type='text', id='text-taskdesc', name='text-taskdesc', placeholder='enter task description')
-		button(id='button-ct', name='button-ct') add task
+		input(type='text', id='text-taskdesc', name='text-taskdesc', placeholder='#{lingua.controls.inputTaskDescription}')
+		button(id='button-ct', name='button-ct') #{lingua.controls.buttonAddTask}
 	section.tasklist.todo
 		h3
-			| todo
+			| #{lingua.lists.headerTodo}
 		ul#todo-list
 			each task in list.tasks
 				if task.state === 'todo'
@@ -28,7 +28,7 @@ block content
 						button(type='submit',  name='button-rm') -
 	section.tasklist.done
 		h3
-			| done
+			| #{lingua.lists.headerDone}
 		ul#done-list
 			each task in list.tasks
 				if task.state === 'done'
@@ -40,6 +40,11 @@ block content
 						label(for='cb-#{task.id}') x
 						span #{task.description}
 						button(type='submit',  name='button-rm') -
+		footer
+			a(href='?language=en') en
+			a(href='?language=de') de
+			a(href='?language=fr') fr
+			a(href='?language=it') it
 
 
 

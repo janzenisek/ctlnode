@@ -1,0 +1,17 @@
+{
+	"taskinfo": {
+		"creationMoment": "from",
+		"expireMoment": "expires on"
+	},
+	"controls": {
+		"inputTaskDescription": "enter task description",
+		"buttonAddTask": "add task",
+		"buttonRemoveTask": "remove",
+		"buttonDoneTask": "done",
+		"buttonUndoneTask": "undone"
+	},
+	"lists": {
+		"headerTodo": "Todo",
+		"headerDone": "Done"
+	}
+}
