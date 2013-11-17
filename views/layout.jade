@@ -2,13 +2,9 @@
 html
 	head
 		title ctlnode
-		link(rel='stylesheet', href='/styles/reset.css')
 		link(rel='stylesheet', href='/styles/defaults.css')
-		link(rel='stylesheet', href='/styles/core.css')
-		script(type='text/javascript', src='/scripts/jquery-2.0.3.min.js')
-		script(type='text/javascript', src='/scripts/plugins.js')
-		script(type='text/javascript', src='/scripts/jade.js')
-		script(type='text/javascript', src='/socket.io/socket.io.js')
+		!{css}
+		!{js}
 	body
 		.page
 			header
@@ -21,3 +17,11 @@ html
 					span: a(href='?language=de') de
 					span: a(href='?language=fr') fr
 					span: a(href='?language=it') it
+				.listinfo
+					span.alias
+						| #{list.alias}
+					span.creationMoment
+						| #{lingua.taskinfo.creationMoment} #{list.creationMoment}
+					span.expireMoment
+						| #{lingua.taskinfo.expireMoment} #{list.expireMoment}
+					

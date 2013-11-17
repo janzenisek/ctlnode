@@ -22,7 +22,9 @@
 		"redirect"	: "0.0.2",
 		"socket.io"	: "0.9.x",
 		"mongoskin"	: "0.6.x",
-		"lingua"	: "0.3.x"
+		"lingua"	: "0.3.x",
+		"amanda"	: "0.4.x",
+		"piler"		: "0.5.x"
 	},
 	"license"		: "MIT",
 	"engines"		: {

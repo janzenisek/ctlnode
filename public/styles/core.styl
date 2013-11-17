@@ -3,6 +3,7 @@ $gray		= #555555
 $black		= #111111
 $white		= #FCFCFC
 $lightgray	= #CCCCCC
+$lightgray2	= #EEEEEE
 $listgray1	= #EEEEEE
 $listgray2	= #DDDDDD
 box-sizing()
@@ -23,21 +24,20 @@ box-sizing()
     height: 0px;
 }
 h2, h3
-	font-size 1em
-	font-family PTSansBold, sans-serif
-	text-transform uppercase
+	font-size 2.2em
+	font-family PatuaOneRegular, Serif
+	text-transform lowercase
+	color $blue
 	padding: 5px 0 5px 0
 a
 	color $blue
 	text-decoration none
-	&:focus
-	&:hover
-		text-decoration underline
+		
 input
 	outline none
 
 body
-	color $gray
+	color $blue
 	background-color $white
 	font-family PTSansRegular, Sans-Serif
 	font-size 13pt
@@ -45,17 +45,18 @@ body
 	.page
 		width 75%
 		margin 0 auto 0 auto
-		padding 30px 0 0 0
+		padding 0 0 0 0
 		&>header
-			padding 10px 0 0 10px
-			margin 0 0 20px 0
-			text-transform uppercase
-			border-bottom 2px solid $lightgray
+			padding 0 0 0 0
+			margin 0 0 0 0
 			a.brand
-				font-family PTSansBold
-				font-size 1.5em
-				font-weight normal
-				color $blue
+				display inline-block
+				padding 30px 30px 30px 30px
+				font-family PatuaOneRegular
+				font-size 2.2em
+				text-transform lowercase
+				color $white
+				background-color $blue
 				text-decoration none
 				&:focus
 				&:hover
@@ -64,15 +65,6 @@ body
 .content
 	header
 		padding 40px 0 20px 0
-		.listinfo
-			float right
-			span
-				color $lightgray
-				padding 0 30px 0 30px
-				border-right 1px solid $lightgray
-				&:last-child
-					border-right 0
-					padding-right 0
 
 form.add-task
 	padding 10px 0 10px 0
@@ -89,7 +81,8 @@ form.add-task
 			font-weight inherit
 			font-family inherit
 			background-color inherit
-			border 2px solid $lightgray
+			border 0
+			border-bottom 2px solid $lightgray
 			resize vertical
 			&:focus
 			&:hover
@@ -168,8 +161,12 @@ section.tasklist
 footer
 	padding 20px 0 20px 0
 	margin 60px 0 0 0
-	text-transform lowercase
-	border-top 2px solid $lightgray
+	position fixed
+	bottom 0
+	width inherit
+	background-color $lightgray2
+	&>div
+		display inline-block
 	.lang-options>span
 		padding 0 10px 0 10px
 		border-right 1px solid $lightgray
@@ -180,6 +177,19 @@ footer
 			&:focus
 			&:hover
 				color $blue
-				text-decoration underline
+	.listinfo
+		float right
+		span
+			color $lightgray
+			padding 0 30px 0 30px
+			border-right 1px solid $lightgray
+			&:last-child
+				border-right 0
+	&:after
+		content "."
+		clear both
+		display block
+		visibility hidden
+		height 0px
 			
 		

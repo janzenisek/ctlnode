@@ -1,14 +1,6 @@
 //- server-side jade template engine
 extends layout
 block content
-	header.clearfix
-		.listinfo
-			span.alias
-				| #{list.alias}
-			span.creationMoment
-				| #{lingua.taskinfo.creationMoment} #{list.creationMoment}
-			span.expireMoment
-				| #{lingua.taskinfo.expireMoment}
 	form#add-task.add-task: ul: li
 		input(type='text', id='text-taskdesc', name='text-taskdesc', placeholder='#{lingua.controls.inputTaskDescription}')
 		button(id='button-ct', name='button-ct') #{lingua.controls.buttonAddTask}
@@ -131,4 +123,11 @@ block content
 					$('#todo-list').append(taskTemplate(taskData));
 				}
 			});
+
+			// listening: change task state 
+			socket.on('deletedList', function() {
+				alert("sorry, this list just expired :-/\nyou'll get redirected to a new alias!");
+				window.location.replace("/");
+			});
+
 		});

@@ -224,3 +224,5 @@ node_modules/mongoskin/
 node_modules/socket.io/
 node_modules/stylus/
 node_modules/lingua/
+node_modules/amanda/
+node_modules/piler/

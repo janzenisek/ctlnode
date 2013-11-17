@@ -2,25 +2,55 @@
 var http        = require('http'),
     express     = require('express'),
     socketio    = require('socket.io'),
-    lingua      = require('lingua')
+    lingua      = require('lingua'),
+    piler       = require('piler'),
     redirect    = require('redirect')('ctlnode.herokuapp.com'),
     lists       = require('lists');
 
+// piler: setup managers
+var clientjs = piler.createJSManager();
+var clientcss = piler.createCSSManager();
+
 // middleware: configuration of nested modules
 var app = express();
+
+// bind app to server-specified listening-port
+// or to the default port 3000, used during deveopment
+var server = http.createServer(app);
+
+// start socket server of socket.io
+var io = socketio.listen(server);
+
 app.configure(function () {
+    clientjs.bind(app, server);
+    clientcss.bind(app, server);
     app.set('view engine', 'jade');
     app.set('views', __dirname + '/views');
     app.use(redirect);
     app.use(express.static(__dirname + '/public'));
+    /* piler takes care of stylus
     app.use(require('stylus').middleware({
         src: __dirname + '/public'
-    }));
+    }));*/
     app.use(lingua(app, {
         defaultLocale: 'en',
         path: __dirname + '/i18n'
     }));
 });
+
+// piler: configure css live-update
+app.configure("development", function () {
+    clientjs.liveUpdate(clientcss, io);
+});
+
+// piler: add files to process over
+clientjs.addUrl('/socket.io/socket.io.js');
+clientjs.addFile(__dirname + '/public/scripts/jquery-2.0.3.min.js');
+clientjs.addFile(__dirname + '/public/scripts/jade.js');
+clientjs.addFile(__dirname + '/public/scripts/plugins.js');
+clientcss.addFile(__dirname + '/public/styles/reset.css');
+//clientcss.addFile(__dirname + '/public/styles/defaults.css');
+clientcss.addFile(__dirname + '/public/styles/core.styl');
 
 // middleware: routing configuration
 app.get('/', function (req, res) {
@@ -42,7 +72,9 @@ app.get('/:alias', function (req, res) {
     var renderList = function (reqList) {
         logEvent("render list: " + reqList.alias);
         res.render('index', {
-            list: reqList
+            list: reqList,
+            js: clientjs.renderTags(),
+            css: clientcss.renderTags()
         });
     }
 
@@ -50,7 +82,7 @@ app.get('/:alias', function (req, res) {
     lists.findOne(req.params.alias, function (err, result) {
         if (err) {
             logEvent("\n" + err + "\n--------------------");
-        } else {          
+        } else {
             // if list for alias has been found in db: render it
             if (result) {
                 logEvent("found list in db for: " + result.alias);
@@ -71,12 +103,7 @@ app.get('/:alias', function (req, res) {
     });
 });
 
-// bind app to server-specified listening-port
-// or to the default port 3000, used during deveopment
-var server = http.createServer(app).listen(process.env.PORT || 3000);
-
-// start socket server of socket.io
-var io = socketio.listen(server);
+server.listen(process.env.PORT || 3000);
 
 // listen to connection-request of clients (argument 'socket')
 io.sockets.on('connection', function (socket) {
@@ -118,6 +145,20 @@ io.sockets.on('connection', function (socket) {
         // do something on dissconection of client
     })
 });
+
+// db-worker: clean db from expired lists and inform list-clients
+// worker-function runs once every hour
+setInterval(function () {
+    lists.find(function (err, result) {
+        for (var i = 0; i < result.length; i++) {
+            if (moment() >= moment(result[i].expireMoment, 'MM/DD/YYYY', true)) {
+                lists.delete(result[i].alias, function () {
+                    io.sockets.in(result[i].alias).emit('deletedList');
+                });
+            }
+        }
+    });
+}, 3600 * 1000);
 
 // make a new random alias
 function makeNewAlias(callback) {
