@@ -217,12 +217,11 @@ pip-log.txt
 
 # Node.js node_modules
 node_modules/.bin/
+node_modules/amanda/
 node_modules/express/
 node_modules/jade/
+node_modules/lingua/
 node_modules/moment/
 node_modules/mongoskin/
+node_modules/node-sass/
 node_modules/socket.io/
-node_modules/stylus/
-node_modules/lingua/
-node_modules/amanda/
-node_modules/piler/
