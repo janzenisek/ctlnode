@@ -1,17 +1,18 @@
-{
+ï»¿{
 	"taskinfo": {
-		"creationMoment": "vom",
-		"expireMoment": "erlischt am"
+		"creationMoment": "da",
+		"expireMoment": "scade il"
 	},
 	"controls": {
-		"inputTaskDescription": "Aufgabenbeschreibung eingeben",
-		"buttonAddTask": "hinzufügen",
-		"buttonRemoveTask": "entfernen",
-		"buttonDoneTask": "erledigen",
-		"buttonUndoneTask": "zurücknehmen"
+		"inputTaskDescription": "inserire la descrizione del compito",
+		"buttonAddTask": "aggiungere",
+		"buttonRemoveTask": "rimuovere",
+		"buttonDoneTask": "fare",
+		"buttonUndoneTask": "disfare"
 	},
 	"lists": {
-		"headerTodo": "Geplant",
-		"headerDone": "Erledigt"
+		"headerTodo": "da fare",
+		"headerInprogress" : "in corso",
+		"headerDone": "finito"
 	}
 }

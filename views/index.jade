@@ -11,11 +11,19 @@ block content
 			each task in list.tasks
 				if task.state === 'todo'
 					li(id='t-#{task.id}')
-						if task.state === 'done'
-							input(type='checkbox', id='cb-#{task.id}', checked='checked')
-						else
-							input(type='checkbox', id='cb-#{task.id}')
-						label(for='cb-#{task.id}') x
+						input(type='checkbox', id='cb-#{task.id}', rel='todo')
+						label(for='cb-#{task.id}') \
+						span #{task.description}
+						button(type='submit',  name='button-rm') -
+	section.tasklist.inprogress
+		h3
+			| #{lingua.lists.headerInprogress}
+		ul#inprogress-list
+			each task in list.tasks
+				if task.state === 'inprogress'
+					li(id='t-#{task.id}')
+						input(type='checkbox', id='cb-#{task.id}', checked='checked', rel='inprogress')
+						label(for='cb-#{task.id}') \
 						span #{task.description}
 						button(type='submit',  name='button-rm') -
 	section.tasklist.done
@@ -24,12 +32,9 @@ block content
 		ul#done-list
 			each task in list.tasks
 				if task.state === 'done'
-					li(id='t-#{task.id}')
-						if task.state === 'done'
-							input(type='checkbox', id='cb-#{task.id}', checked='checked')
-						else
-							input(type='checkbox', id='cb-#{task.id}')
-						label(for='cb-#{task.id}') x
+					li(id='t-#{task.id}')		
+						input(type='checkbox', id='cb-#{task.id}', checked='checked', rel='done')
+						label(for='cb-#{task.id}') #
 						span #{task.description}
 						button(type='submit',  name='button-rm') -
 
@@ -40,10 +45,15 @@ block content
 	script(type='text/jade')#taskTemplate.
 		li(id='t-\#{id}')
 			if state === 'done'
-				input(type='checkbox', id='cb-\#{id}', checked='checked')			
+				input(type='checkbox', id='cb-\#{id}', checked='checked', rel='done')
+				label(for='cb-\#{id}') #
+			else if state === 'inprogress'
+				input(type='checkbox', id='cb-\#{id}', checked='checked', rel='inprogress')
+				label(for='cb-\#{id}') \
 			else
-				input(type='checkbox', id='cb-\#{id}')
-			label(for='cb-\#{id}') x
+				input(type='checkbox', id='cb-\#{id}', rel='todo')
+				label(for='cb-\#{id}') \
+			
 			span \#{description}
 			button(type='submit', name='button-rm') -
 
@@ -82,7 +92,16 @@ block content
 				$tc.on('click', 'input[type="checkbox"]', function(event){
 					$item = $(this);
 					var taskId = $item.parent().attr("id").substring(2);
-					var currentState = $item.is(":checked") ? 'done' : 'todo';
+					var currentState = $item.attr("rel");
+					console.log(currentState);
+
+					if(currentState === 'todo')
+						currentState = 'inprogress';
+					else if(currentState === 'inprogress')
+						currentState = 'done';
+					else if(currentState === 'done')
+						currentState = 'todo';
+
 					socket.emit('changeTaskState', { id: taskId, state: currentState });
 				});
 
@@ -119,12 +138,14 @@ block content
 				// add it to the other list
 				if(taskData.state == 'done') {
 					$('#done-list').append(taskTemplate(taskData));
+				} else if(taskData.state == 'inprogress') {
+					$('#inprogress-list').append(taskTemplate(taskData));
 				} else {
 					$('#todo-list').append(taskTemplate(taskData));
 				}
 			});
 
-			// listening: change task state 
+			// listening: list deletion
 			socket.on('deletedList', function() {
 				alert("sorry, this list just expired :-/\nyou'll get redirected to a new alias!");
 				window.location.replace("/");

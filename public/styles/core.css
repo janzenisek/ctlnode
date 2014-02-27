@@ -1,0 +1,186 @@
+* {
+  padding: 0;
+  margin: 0; }
+
+ul {
+  padding: 0;
+  list-style-type: none; }
+
+.clearfix:after {
+  content: ".";
+  clear: both;
+  display: block;
+  visibility: hidden;
+  height: 0px; }
+
+h2, h3 {
+  font-size: 2.2em;
+  font-family: PatuaOneRegular, Serif;
+  text-transform: lowercase;
+  color: #4F81BD;
+  padding: 5px 0 5px 0; }
+
+a {
+  color: #4F81BD;
+  text-decoration: none; }
+
+input {
+  outline: none; }
+
+body {
+  color: #555555;
+  background-color: #FCFCFC;
+  font-family: PTSansRegular, Sans-Serif;
+  font-size: 13pt;
+  font-weight: normal; }
+  body .page {
+    width: 75%;
+    margin: 0 auto 0 auto;
+    padding: 0 0 0 0; }
+    body .page > header {
+      padding: 0 0 0 0;
+      margin: 0 0 0 0; }
+      body .page > header a.brand {
+        display: inline-block;
+        padding: 30px 30px 30px 30px;
+        font-family: PatuaOneRegular;
+        font-size: 2.2em;
+        text-transform: lowercase;
+        color: #FCFCFC;
+        background-color: #4F81BD;
+        text-decoration: none; }
+        body .page > header a.brand:focus, body .page > header a.brand:hover {
+          text-decoration: none; }
+
+.content header {
+  padding: 40px 0 20px 0; }
+
+form.add-task {
+  padding: 10px 0 10px 0; }
+  form.add-task ul > li {
+    display: block; }
+    form.add-task ul > li:after {
+      content: ".";
+      clear: both;
+      display: block;
+      visibility: hidden;
+      height: 0px; }
+    form.add-task ul > li input, form.add-task ul > li button {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      background-color: inherit;
+      border: 0;
+      border-bottom: 2px solid #CCCCCC;
+      resize: vertical; }
+      form.add-task ul > li input:focus, form.add-task ul > li input:hover, form.add-task ul > li button:focus, form.add-task ul > li button:hover {
+        border-color: #4F81BD; }
+    form.add-task ul > li input {
+      margin: 0 0 0 0;
+      width: 80%;
+      padding: 10px;
+      float: left;
+      color: #CCCCCC; }
+      form.add-task ul > li input:focus, form.add-task ul > li input:hover {
+        color: #4F81BD; }
+    form.add-task ul > li button {
+      margin: 0;
+      width: 15%;
+      padding: 11px 0px 9px 0px;
+      text-align: center;
+      float: right;
+      text-transform: lowercase;
+      cursor: pointer;
+      color: #FCFCFC;
+      background-color: #CCCCCC; }
+      form.add-task ul > li button:focus, form.add-task ul > li button:hover {
+        background-color: #4F81BD; }
+
+section.tasklist {
+  padding: 20px 0 20px 0; }
+  section.tasklist ul {
+    margin: 10px 0 10px 0; }
+    section.tasklist ul li {
+      margin: 0 0 10px 0;
+      color: #CCCCCC; }
+      section.tasklist ul li input[type=checkbox] {
+        display: none; }
+      section.tasklist ul li input[type=checkbox] + label {
+        width: 32;
+        height: 32;
+        float: left;
+        padding: 25px 32px 25px 32px;
+        display: inline-block;
+        cursor: pointer;
+        color: #FCFCFC;
+        background-color: #FCFCFC;
+        border: 5px solid #CCCCCC;
+        border-radius: 45px;
+        font-family: PTSansRegular;
+        font-weight: 900;
+        overflow: hidden; }
+        section.tasklist ul li input[type=checkbox] + label:hover {
+          color: #4F81BD;
+          border-color: #4F81BD; }
+      section.tasklist ul li input[type=checkbox]:checked + label {
+        color: #CCCCCC; }
+      section.tasklist ul li input[type=checkbox]:checked:hover + label {
+        color: #4F81BD; }
+      section.tasklist ul li span {
+        float: left;
+        padding: 30px; }
+      section.tasklist ul li button {
+        float: right;
+        margin: 30px 0 0 0;
+        color: #FCFCFC;
+        background-color: #CCCCCC;
+        outline: none;
+        font-family: PTSansRegular;
+        font-size: inherit;
+        font-weight: 900;
+        line-height: inherit;
+        border: 0;
+        padding: 5px 13px 5px 13px;
+        border-radius: 65px;
+        cursor: pointer; }
+        section.tasklist ul li button:hover {
+          background-color: #4F81BD; }
+      section.tasklist ul li:after {
+        content: ".";
+        clear: both;
+        display: block;
+        visibility: hidden;
+        height: 0px; }
+
+footer {
+  padding: 20px 0 20px 0;
+  margin: 60px 0 0 0;
+  position: fixed;
+  bottom: 0;
+  width: inherit;
+  background-color: #EEEEEE; }
+  footer > div {
+    display: inline-block; }
+  footer .lang-options > span {
+    padding: 0 10px 0 10px;
+    border-right: 1px solid #CCCCCC; }
+    footer .lang-options > span:last-child {
+      border-right: 0; }
+    footer .lang-options > span a {
+      color: #CCCCCC; }
+      footer .lang-options > span a:focus, footer .lang-options > span a:hover {
+        color: #4F81BD; }
+  footer .listinfo {
+    float: right; }
+    footer .listinfo span {
+      color: #CCCCCC;
+      padding: 0 30px 0 30px;
+      border-right: 1px solid #CCCCCC; }
+      footer .listinfo span:last-child {
+        border-right: 0; }
+  footer:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px; }

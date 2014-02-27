@@ -31,3 +31,13 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'AlexBrush';
+    src: url('../fonts/alexbrush-regular/alexbrush-regular-webfont.eot');
+    src: url('../fonts/alexbrush-regular/alexbrush-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/alexbrush-regular/alexbrush-regular-webfont.woff') format('woff'),
+         url('../fonts/alexbrush-regular/alexbrush-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

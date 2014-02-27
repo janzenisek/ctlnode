@@ -1,17 +1,18 @@
-{
+﻿{
 	"taskinfo": {
-		"creationMoment": "from",
-		"expireMoment": "expires on"
+		"creationMoment": "à partir de",
+		"expireMoment": "expire le"
 	},
 	"controls": {
-		"inputTaskDescription": "enter task description",
-		"buttonAddTask": "add task",
-		"buttonRemoveTask": "remove",
-		"buttonDoneTask": "done",
-		"buttonUndoneTask": "undone"
+		"inputTaskDescription": "entrez la description de tâche",
+		"buttonAddTask": "ajouter",
+		"buttonRemoveTask": "supprimer",
+		"buttonDoneTask": "faire",
+		"buttonUndoneTask": "annuler"
 	},
 	"lists": {
-		"headerTodo": "ToDo",
-		"headerDone": "Done"
+		"headerTodo": "à faire",
+		"headerInprogress" : "en cours",
+		"headerDone": "fini"
 	}
 }

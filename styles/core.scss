@@ -1,0 +1,261 @@
+// VARIABLES
+// ===================================
+$blue		: #4F81BD;
+$gray		: #555555;
+$black		: #111111;
+$white		: #FCFCFC;
+$lightgray	: #CCCCCC;
+$lightgray2	: #EEEEEE;
+$listgray1	: #EEEEEE;
+$listgray2	: #DDDDDD;
+
+$primaryFont	: PatuaOneRegular;
+$secondaryFont	: PTSansRegular;
+
+
+
+// MIXINS
+// ===================================
+@mixin box-sizing( $type: border-box ) {
+    -webkit-box-sizing: $type;
+       -moz-box-sizing: $type;
+         -o-box-sizing: $type;
+        -ms-box-sizing: $type;
+            box-sizing: $type;
+}
+
+
+// STYLE
+// ===================================
+* {
+	padding: 0;
+	margin: 0;
+}
+
+ ul {
+	padding: 0;
+	list-style-type: none;
+}
+
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
+}
+
+h2, h3 {
+	font-size: 2.2em;
+	font-family: $primaryFont, Serif;
+	text-transform: lowercase;
+	color: $blue;
+	padding: 5px 0 5px 0;
+}
+
+a {
+	color: $blue;
+	text-decoration: none;
+}
+		
+input {
+	outline: none;
+}
+
+body {
+	color: $gray;
+	background-color: $white;
+	font-family: $secondaryFont, Sans-Serif;
+	font-size: 13pt;
+	font-weight: normal;
+	.page {
+		width: 75%;
+		margin: 0 auto 0 auto;
+		padding: 0 0 0 0;
+		&>header {
+			padding: 0 0 0 0;
+			margin: 0 0 0 0;
+			a.brand {
+				display: inline-block;
+				padding: 30px 30px 30px 30px;
+				font-family: $primaryFont;
+				font-size: 2.2em;
+				text-transform: lowercase;
+				color: $white;
+				background-color: $blue;
+				text-decoration: none;
+				&:focus, &:hover {
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+
+.content {
+	header {
+		padding: 40px 0 20px 0;
+	}
+}
+
+form.add-task {
+	padding: 10px 0 10px 0;
+	ul>li {
+		display: block;
+		&:after {
+			content: ".";
+			clear: both;
+			display: block;
+			visibility: hidden;
+			height: 0px;
+		}
+		input, button {
+			font-size: inherit;
+			font-weight: inherit;
+			font-family: inherit;
+			background-color: inherit;
+			border: 0;
+			border-bottom: 2px solid $lightgray;
+			resize: vertical;
+			&:focus, &:hover {
+				border-color: $blue;
+			}
+		}
+		input {
+			margin: 0 0 0 0;
+			width: 80%;
+			padding: 10px;
+			float: left;
+			color: $lightgray;
+			&:focus, &:hover {
+				color: $blue;
+			}
+		}
+		button {
+			margin: 0;
+			width: 15%;
+			padding: 11px 0px 9px 0px;
+			text-align: center;
+			float: right;
+			text-transform: lowercase;
+			cursor: pointer;
+			color: $white;
+			background-color: $lightgray;
+			&:focus, &:hover {
+				background-color: $blue;
+			}
+		}
+	}
+}
+
+section.tasklist {
+	padding: 20px 0 20px 0;
+	ul {
+		margin: 10px 0 10px 0;
+		li {
+			margin: 0 0 10px 0;
+			color: $lightgray;
+			input[type=checkbox] {
+				display: none;
+			}
+			input[type=checkbox] + label {
+				width: 32;
+				height: 32;
+				float: left;
+				padding: 25px 32px 25px 32px;
+				display: inline-block;
+				cursor: pointer;
+				color: $white;
+				background-color: $white;
+				border: 5px solid $lightgray;
+				border-radius: 45px;
+				font-family: $secondaryFont;
+				font-weight: 900;
+				overflow: hidden;
+				&:hover {
+					color: $blue;
+					border-color: $blue;
+				}
+			}
+			input[type=checkbox]:checked + label {
+				color: $lightgray;
+			}
+			input[type=checkbox]:checked:hover + label {
+				color: $blue;
+			}
+			span {
+				float: left;
+				padding: 30px;
+			}
+			button {
+				float: right;
+				margin: 30px 0 0 0;
+				color: $white;
+				background-color: $lightgray;
+				outline: none;
+				font-family: $secondaryFont;
+				font-size: inherit;
+				font-weight: 900;
+				line-height: inherit;
+				border: 0;
+				padding: 5px 13px 5px 13px;
+				border-radius: 65px;
+				cursor: pointer;
+				&:hover {
+					background-color: $blue;
+				}
+			}
+			&:after {
+				content: ".";
+				clear: both;
+				display: block;
+				visibility: hidden;
+				height: 0px;
+			}
+		}
+	}
+}
+
+footer {
+	padding: 20px 0 20px 0;
+	margin: 60px 0 0 0;
+	position: fixed;
+	bottom: 0;
+	width: inherit;
+	background-color: $lightgray2;
+	&>div {
+		display: inline-block;
+	}
+	.lang-options>span {
+		padding: 0 10px 0 10px;
+		border-right: 1px solid $lightgray;
+		&:last-child {
+			border-right: 0;
+		}
+		a {
+			color: $lightgray;
+			&:focus, &:hover {
+				color: $blue;
+			}
+		}
+	}
+	.listinfo {
+		float: right;
+		span {
+			color: $lightgray;
+			padding: 0 30px 0 30px;
+			border-right: 1px solid $lightgray;
+			&:last-child {
+				border-right: 0;
+			}
+		}
+	}
+	&:after {
+		content: ".";
+		clear: both;
+		display: block;
+		visibility: hidden;
+		height: 0px;
+	}
+}
+		

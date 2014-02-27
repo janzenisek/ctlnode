@@ -1,67 +1,53 @@
-// require modules
-var http        = require('http'),
-    express     = require('express'),
-    socketio    = require('socket.io'),
-    lingua      = require('lingua'),
-    piler       = require('piler'),
-    redirect    = require('redirect')('ctlnode.herokuapp.com'),
-    lists       = require('lists');
+// load modules
+var http = require('http'),
+    express = require('express'),
+    socketio = require('socket.io'),
+    sass = require('node-sass'),
+    lingua = require('lingua'),
+    redirect = require('redirect')('ctlnode.herokuapp.com'),
+    listdao = require('list-dal');
 
-// piler: setup managers
-var clientjs = piler.createJSManager();
-var clientcss = piler.createCSSManager();
-
-// middleware: configuration of nested modules
+// create an express instance
 var app = express();
 
-// bind app to server-specified listening-port
-// or to the default port 3000, used during deveopment
+// create new HTTP-server for the express instance
 var server = http.createServer(app);
 
-// start socket server of socket.io
-var io = socketio.listen(server);
-
+// configure express
 app.configure(function () {
-    clientjs.bind(app, server);
-    clientcss.bind(app, server);
-    app.set('view engine', 'jade');
-    app.set('views', __dirname + '/views');
     app.use(redirect);
+
+    // configure jade (template engine)
+    app.set('view engine', 'jade'); // use jade, which is integrated in express
+    app.set('views', __dirname + '/views'); // where the template files are
+
+    // configure directory for static embedding
     app.use(express.static(__dirname + '/public'));
-    /* piler takes care of stylus
-    app.use(require('stylus').middleware({
-        src: __dirname + '/public'
-    }));*/
+
+    // configure node-sass (css preprocessor)
+    app.use(sass.middleware({
+        src: __dirname, // where the sass files are 
+        dest: __dirname + '/public', // where css should go
+        debug: true
+     }));
+
+    // configure lingua (internationalization module)
     app.use(lingua(app, {
         defaultLocale: 'en',
         path: __dirname + '/i18n'
     }));
 });
 
-// piler: configure css live-update
-app.configure("development", function () {
-    clientjs.liveUpdate(clientcss, io);
-});
-
-// piler: add files to process over
-clientjs.addUrl('/socket.io/socket.io.js');
-clientjs.addFile(__dirname + '/public/scripts/jquery-2.0.3.min.js');
-clientjs.addFile(__dirname + '/public/scripts/jade.js');
-clientjs.addFile(__dirname + '/public/scripts/plugins.js');
-clientcss.addFile(__dirname + '/public/styles/reset.css');
-//clientcss.addFile(__dirname + '/public/styles/defaults.css');
-clientcss.addFile(__dirname + '/public/styles/core.styl');
-
-// middleware: routing configuration
+// case 1: receive url without alias
 app.get('/', function (req, res) {
     // create new random url and link to it
     logEvent("got url without alias");
     makeNewAlias(function (newAlias) {
-        res.redirect(307, '/' + newAlias);
+        res.redirect(307, '/' + newAlias); // redirect to new alias
     });
 });
 
-// middleware: routing configuration
+// case 2: receive url with alias
 app.get('/:alias', function (req, res) {
     // ignore request for favion
     if (req.params.alias === 'favicon.ico') return;
@@ -72,14 +58,12 @@ app.get('/:alias', function (req, res) {
     var renderList = function (reqList) {
         logEvent("render list: " + reqList.alias);
         res.render('index', {
-            list: reqList,
-            js: clientjs.renderTags(),
-            css: clientcss.renderTags()
+            list: reqList
         });
     }
 
-    // case 1: find mapped list in mongodb 'ctlnode' or create a new one and let it render
-    lists.findOne(req.params.alias, function (err, result) {
+    // find mapped list in mongodb 'ctlnode' or create a new one and let it render
+    listdao.findOne(req.params.alias, function (err, result) {
         if (err) {
             logEvent("\n" + err + "\n--------------------");
         } else {
@@ -89,7 +73,7 @@ app.get('/:alias', function (req, res) {
                 renderList(result);
             } else {
                 // if there is no list for alias in db: create one...
-                lists.create(req.params.alias, function (err, result) {
+                listdao.create(req.params.alias, function (err, result) {
                     if (err) {
                         logEvent("\n" + err + "\n--------------------");
                     } else {
@@ -103,16 +87,38 @@ app.get('/:alias', function (req, res) {
     });
 });
 
-server.listen(process.env.PORT || 3000);
+// bind app to the listening-port specified by the environment
+// or to the default port 4242, used during deveopment
+server.listen(process.env.PORT || 4242);
 
-// listen to connection-request of clients (argument 'socket')
+// start socket server of socket.io
+var io = socketio.listen(server);
+
+// configure socket.io (use environment flags: 'development' | 'production')
+io.configure('production', function () {
+    io.enable('browser client minification');  // send minified client script
+    io.enable('browser client etag');          // apply etag caching logic based on version number
+    io.enable('browser client gzip');          // gzip the file
+    io.set('log level', 1);                    // reduce logging
+
+    // enable all transports
+    io.set('transports', [
+        'websocket'
+      , 'flashsocket'
+      , 'htmlfile'
+      , 'xhr-polling'
+      , 'jsonp-polling'
+    ]);
+});
+
+// listen to connection-request of clients - argument is the clients socket
 io.sockets.on('connection', function (socket) {
     logEvent("got connection-request from: " + socket.id);
     // listen to client sending an alias
     socket.on('aliasResponse', function (aliasData, callbackAliasResponse) {
         logEvent("got alias: " + aliasData.alias);
         // join client to a room (a socket partition for all clients who collaborate on one list)
-        socket.join(aliasData.alias); 
+        socket.join(aliasData.alias);
         logEvent("joined aliasroom: " + aliasData.alias);
         // respond to client and let him attend to the 'conversation' in room
         callbackAliasResponse();
@@ -120,39 +126,39 @@ io.sockets.on('connection', function (socket) {
         socket.on('addTask', function (taskData) {
             logEvent("got task to add: " + taskData.description);
             // create new task for taskData on db and send it back to all clients, listening on alias
-            lists.addTask(aliasData.alias, taskData.description, function (newTask) {
+            listdao.addTask(aliasData.alias, taskData.description, function (newTask) {
                 // respond to client that the task is added
                 io.sockets.in(aliasData.alias).emit('addedTask', newTask);
-            });  
+            });
         });
         // listen to removeTask-actions of client
         socket.on('removeTask', function (taskData) {
-            lists.removeTask(aliasData.alias, taskData.id, function () {
+            listdao.removeTask(aliasData.alias, taskData.id, function () {
                 // respond to client that the task is removed
                 io.sockets.in(aliasData.alias).emit('removedTask', taskData.id);
-            })
+            });
         });
         // listen to changeTaskState-actions of client
         socket.on('changeTaskState', function (taskData) {
-            lists.changeTaskState(aliasData.alias, taskData.id, taskData.state, function (changedTask) {
+            listdao.changeTaskState(aliasData.alias, taskData.id, taskData.state, function (changedTask) {
                 // respond to client that the task is changed
                 io.sockets.in(aliasData.alias).emit('changedTaskState', changedTask);
-            })
+            });
         });
-    })
+    });
     // listen to disconnection of client bound to 'socket'
     socket.on('dissconnect', function () {
-        // do something on dissconection of client
-    })
+        // nothing to do on dissconection of client
+    });
 });
 
 // db-worker: clean db from expired lists and inform list-clients
 // worker-function runs once every hour
 setInterval(function () {
-    lists.find(function (err, result) {
+    listdao.find(function (err, result) {
         for (var i = 0; i < result.length; i++) {
             if (moment() >= moment(result[i].expireMoment, 'MM/DD/YYYY', true)) {
-                lists.delete(result[i].alias, function () {
+                listdao.delete(result[i].alias, function () {
                     io.sockets.in(result[i].alias).emit('deletedList');
                 });
             }
@@ -169,7 +175,7 @@ function makeNewAlias(callback) {
         alias += possible.charAt(Math.floor(Math.random() * possible.length));
 
     // proove generated alias against db... 
-    lists.findOne(alias, function (err, result) {
+    listdao.findOne(alias, function (err, result) {
         if (!result) {
             logEvent("made a new alias: " + alias);
             // ...and return return it
@@ -179,7 +185,7 @@ function makeNewAlias(callback) {
             // ...and call function recursivly in case of already existing alias
             makeNewAlias(callback);
         }
-    });   
+    });
 }
 
 function logEvent(msg) {

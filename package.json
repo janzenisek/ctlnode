@@ -1,34 +1,29 @@
 {
-	"name"			: "app.js",
+	// some general infos, partly used by hosting services:
+	"name"			: "ctlnode", // name of the app
 	"version"		: "0.0.1",
 	"author"		: "Jan Zenisek <janzenisek@gmx.at>",
-	"description"	: "ctlnode - a simple collaborative task list tool using node.js (and modules)",
-	"repository"	: {
-		"type"	: "git",
-		"url"	: "git://github.com/janzenisek/ctlnode.git"
-	},
-	"keywords"		: [
-		"collaborative",
-		"task",
-		"list",
-		"todo",
-		"check"
-	],
-	"dependencies"	: {
+	"description"	: "ctlnode - a simple collaborative task list tool using node.js",
+	"repository"	: { "type" : "git", "url" : "git://github.com/janzenisek/ctlnode.git" },
+	"keywords"		: ["collaborative", "todo", "list"],
+
+	// important for npm:
+	"dependencies"	: { 
 		"express"	: "3.4.x",
+		"socket.io"	: "0.9.x",
 		"jade"		: "0.35.x",
-		"stylus"	: "0.39.x",
+		"node-sass"	: "0.8.x",
 		"moment"	: "2.4.x",
 		"redirect"	: "0.0.2",
-		"socket.io"	: "0.9.x",
 		"mongoskin"	: "0.6.x",
 		"lingua"	: "0.3.x",
-		"amanda"	: "0.4.x",
-		"piler"		: "0.5.x"
+		"amanda"	: "0.4.x"
 	},
 	"license"		: "MIT",
+
+	// instructs hosting services:
 	"engines"		: {
-		"node"	: "0.10.x",
+		"node"	: "0.10.x", 
 		"npm"	: "1.3.x"
 	}
 }
